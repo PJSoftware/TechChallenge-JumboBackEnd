@@ -1,21 +1,29 @@
 package main
 
 import (
-	"fmt"
+	"log"
+	"net/http"
 
 	"./dummydb"
+	"./endpoint"
+	"./server"
 )
+
+const serverAddress = ":8080"
 
 func main() {
 	dummydb.InitDB()
-	fmt.Println(dummydb.PetByID(1))
-	fmt.Println(dummydb.PetByID(2))
-	fmt.Println(dummydb.PetByID(3))
-	fmt.Println(dummydb.PetByID(4))
-	fmt.Println(dummydb.PetByID(5))
-	fmt.Println(dummydb.UserByUserName("alice"))
-	fmt.Println(dummydb.UserByUserName("bob"))
-	fmt.Println(dummydb.UserByUserName("charlie"))
-	fmt.Println(dummydb.OrderByID(1))
-	fmt.Println(dummydb.OrderByID(2))
+
+	epr := new(endpoint.Request)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", epr.Parser)
+
+	srv := server.New(mux, serverAddress)
+
+	// In the real world we would use ListenAndServeTLS() with certificate details
+	// so that our TLS settings are actually applied.
+	err := srv.ListenAndServe()
+	if err != nil {
+		log.Fatalf("server failed to start: %v", err)
+	}
 }
