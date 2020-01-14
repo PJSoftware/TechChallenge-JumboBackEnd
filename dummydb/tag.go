@@ -10,10 +10,12 @@ var tagID int64
 var tagTBL []*Tag
 
 // NewTag adds a new tag to the db, returns the ID
-func NewTag(name string) int64 {
+func NewTag(name string) *Tag {
 	tagID++
 	id := tagID
-	t := Tag{id, name}
-	tagTBL = append(tagTBL, &t)
-	return id
+	t := new(Tag)
+	t.ID = id
+	t.Name = name
+	tagTBL = append(tagTBL, t)
+	return t
 }

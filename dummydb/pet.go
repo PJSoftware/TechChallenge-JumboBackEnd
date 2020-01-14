@@ -4,12 +4,12 @@ import "fmt"
 
 // Pet holds the details of the pet
 type Pet struct {
-	ID         int64    `json:"id"`
-	CategoryID int64    `json:"category"`
-	Name       string   `json:"name"`
-	PhotoURLs  []string `json:"photoUrls"`
-	Tags       []int64  `json:"tags"`
-	Status     string
+	ID        int64    `json:"id"`
+	Category  Category `json:"category"`
+	Name      string   `json:"name"`
+	PhotoURLs []string `json:"photoUrls"`
+	Tags      []Tag    `json:"tags"`
+	Status    string
 }
 
 const petAvail string = "available"
@@ -20,13 +20,13 @@ var petID int64
 var petTBL []*Pet
 
 // NewPet adds a new Pet to the db, returns the ID
-func NewPet(name string, catID int64, photoURLs []string, tags []int64) int64 {
+func NewPet(name string, category Category, photoURLs []string, tags []Tag) int64 {
 	petID++
 	id := petID
 	p := new(Pet)
 	p.ID = id
 	p.Name = name
-	p.CategoryID = catID
+	p.Category = category
 	for _, u := range photoURLs {
 		p.PhotoURLs = append(p.PhotoURLs, u)
 	}

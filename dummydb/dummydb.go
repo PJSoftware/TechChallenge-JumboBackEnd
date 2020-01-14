@@ -9,27 +9,33 @@ package dummydb
 
 // InitDB should be called to initialise our dummy database
 func InitDB() {
-	// Categories
-	catIDDog := NewCategory("Dog")
-	catIDCat := NewCategory("Cat")
-	catIDGerbil := NewCategory("Gerbil")
-	catIDSnake := NewCategory("Snake")
+	// Categories in dummydb
+	categoryDog := NewCategory("Dog")
+	categoryCat := NewCategory("Cat")
+	categoryGerbil := NewCategory("Gerbil")
+	categorySnake := NewCategory("Snake")
 
-	tagIDCute := NewTag("Cute")
-	tagIDFluffy := NewTag("Fluffy")
-	tagIDFriendly := NewTag("Friendly")
+	// Tags in dummydb
+	tagCute := NewTag("Cute")
+	tagFluffy := NewTag("Fluffy")
+	tagFriendly := NewTag("Friendly")
+	tagBig := NewTag("Big")
+	tagSmall := NewTag("Small")
 
-	petIDFido := NewPet("Fido", catIDDog, []string{"fido.jpg"}, []int64{tagIDCute, tagIDFluffy, tagIDFriendly})
-	petIDSev := NewPet("Severus", catIDSnake, []string{"severus.jpg"}, []int64{tagIDFriendly})
+	// Pets in dummydb
+	petIDFido := NewPet("Fido", *categoryDog, []string{"fido.jpg"}, []Tag{*tagCute, *tagFluffy, *tagFriendly, *tagBig})
+	petIDSev := NewPet("Severus", *categorySnake, []string{"severus.jpg"}, []Tag{*tagFriendly, *tagBig})
 
-	NewPet("Moggy", catIDCat, []string{"moggy1.jpg", "moggy2.jpg"}, []int64{tagIDCute, tagIDFluffy})
-	NewPet("Gerry", catIDGerbil, []string{"gerry.jpg"}, []int64{tagIDFluffy})
-	NewPet("Rover", catIDDog, []string{"fido.jpg"}, []int64{tagIDCute, tagIDFluffy, tagIDFriendly})
+	NewPet("Moggy", *categoryCat, []string{"moggy1.jpg", "moggy2.jpg"}, []Tag{*tagCute, *tagFluffy, *tagSmall})
+	NewPet("Gerry", *categoryGerbil, []string{"gerry.jpg"}, []Tag{*tagFluffy, *tagSmall})
+	NewPet("Rover", *categoryDog, []string{"fido.jpg"}, []Tag{*tagCute, *tagFluffy, *tagFriendly})
 
-	NewUser("Alice", "L00kingGl4ss", "alice@example.com", "Alice", "Liddell", "")
+	// Users in dummydb
+	NewUser("Alice", "L00kingGl4ss", "alice@example.com", "Alice", "Liddell", "N/A")
 	NewUser("Bob", "EQ4L1s3r", "bob@example.com", "Robert", "McCall", "555-4200")
 	NewUser("Charlie", "aNgEl5", "charlie@example.com", "Charles", "Townsend", "1 (857) CHARLIE")
 
+	// Orders in dummydb
 	orderIDFido := NewOrder(petIDFido)
 	OrderByID(orderIDFido).Shipped()
 

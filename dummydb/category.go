@@ -10,10 +10,12 @@ var categoryID int64
 var categoryTBL []*Category
 
 // NewCategory adds a new Category to the db, returns the ID
-func NewCategory(name string) int64 {
+func NewCategory(name string) *Category {
 	categoryID++
 	id := categoryID
-	c := Category{id, name}
-	categoryTBL = append(categoryTBL, &c)
-	return id
+	c := new(Category)
+	c.ID = id
+	c.Name = name
+	categoryTBL = append(categoryTBL, c)
+	return c
 }
