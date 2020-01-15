@@ -15,6 +15,8 @@ I have included an additional "/reset4test" url which allows the test suite to r
 
 That said, I have created a dummydb package which models all the data; in a real world situation this would, of course, be linked to an actual database, but for this task it simply initalises in memory with a few sample data points.
 
+Finally, I used the external golang.org/x/crypto/bcrypt library for password hashing. If you do not already have it on your system, "go get golang.org/x/crypto/bcrypt" should install it.
+
 ### Testing
 
 I implemented a main_test package which tests the API itself, via calls to cURL, and examines the results. The curlEXE const points to the location of the executable; obviously I developed this on a Windows machine.
