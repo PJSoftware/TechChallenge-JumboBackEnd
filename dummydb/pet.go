@@ -9,12 +9,17 @@ type Pet struct {
 	Name      string   `json:"name"`
 	PhotoURLs []string `json:"photoUrls"`
 	Tags      []Tag    `json:"tags"`
-	Status    string
+	Status    string   `json:"status"`
 }
 
-const petAvail string = "available"
-const petPending string = "pending" // used when pet is ordered
-const petSold string = "sold"       // used when order is shipped
+type petStatus struct {
+	Available string
+	Pending   string
+	Sold      string
+}
+
+// PetStatus used as enum
+var PetStatus = petStatus{Available: "available", Pending: "pending", Sold: "sold"}
 
 var petID int64
 var petTBL []*Pet
@@ -33,7 +38,7 @@ func NewPet(name string, category Category, photoURLs []string, tags []Tag) int6
 	for _, t := range tags {
 		p.Tags = append(p.Tags, t)
 	}
-	p.Status = petAvail
+	p.Status = PetStatus.Available
 	petTBL = append(petTBL, p)
 	return id
 }
@@ -50,7 +55,7 @@ func PetByID(id int64) *Pet {
 
 // SetStatus used to modify status of Pet
 func (p *Pet) SetStatus(status string) (string, error) {
-	if status == petAvail || status == petPending || status == petSold {
+	if status == PetStatus.Available || status == PetStatus.Pending || status == PetStatus.Sold {
 		p.Status = status
 		return p.Status, nil
 	}

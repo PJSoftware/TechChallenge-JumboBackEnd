@@ -1,8 +1,6 @@
 package dummydb
 
-import (
-	"time"
-)
+import "time"
 
 // Order contains our order information
 //
@@ -26,9 +24,14 @@ type Order struct {
 	Complete bool   `json:"complete"`
 }
 
-const orderPlaced string = "placed"
-const orderApproved string = "approved"   // I'm not sure what use this has?
-const orderDelivered string = "delivered" // "shipped" would make more sense
+type orderStatus struct {
+	Placed    string
+	Approved  string
+	Delivered string
+}
+
+// OrderStatus used as enum
+var OrderStatus = orderStatus{Placed: "placed", Approved: "approved", Delivered: "delivered"}
 
 var orderID int64
 var orderTBL []*Order
@@ -41,8 +44,8 @@ func NewOrder(petID int64) int64 {
 	o.ID = id
 	o.PetID = petID
 	o.Quantity = 1
-	o.Status = orderPlaced
-	PetByID(petID).SetStatus(petPending)
+	o.Status = OrderStatus.Placed
+	PetByID(petID).SetStatus(PetStatus.Pending)
 	orderTBL = append(orderTBL, o)
 	return id
 }
@@ -59,8 +62,8 @@ func OrderByID(id int64) *Order {
 
 // Shipped changes the order status to shipped
 func (o *Order) Shipped() {
-	o.Status = orderDelivered
+	o.Status = OrderStatus.Delivered
 	o.ShipDate = time.Now().Format(time.RFC1123)
 	o.Complete = true
-	PetByID(o.PetID).SetStatus(petSold)
+	PetByID(o.PetID).SetStatus(PetStatus.Sold)
 }
