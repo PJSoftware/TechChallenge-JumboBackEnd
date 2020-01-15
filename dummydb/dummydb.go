@@ -1,5 +1,7 @@
 package dummydb
 
+import "log"
+
 // Obviously in a real world situation our database would be some sort of
 // SQL-based RDB. For our purposes here, this will have to do.
 
@@ -7,8 +9,12 @@ package dummydb
 // category names, usernames, etc, would be unique. For simplicity I have
 // not implemented such checks in our dummy database setup code.
 
-// InitDB should be called to initialise our dummy database
+// InitDB should be called to initialise (and/or reset) our dummy database
+// Note that reset capability is required for consistent testing
 func InitDB() {
+	log.Print("Initialising dummyDB")
+	resetAllTables()
+
 	// Categories in dummydb
 	categoryDog := NewCategory("Dog")
 	categoryCat := NewCategory("Cat")
@@ -40,4 +46,21 @@ func InitDB() {
 	OrderByID(orderIDFido).Shipped()
 
 	NewOrder(petIDSev)
+}
+
+func resetAllTables() {
+	categoryTBL = nil
+	categoryID = 0
+
+	tagTBL = nil
+	tagID = 0
+
+	petTBL = nil
+	petID = 0
+
+	userTBL = nil
+	userID = 0
+
+	orderTBL = nil
+	orderID = 0
 }

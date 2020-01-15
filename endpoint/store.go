@@ -1,5 +1,7 @@
 package endpoint
 
+import "net/http"
+
 // GET
 // ​/store​/inventory
 // Returns pet inventories by status
@@ -17,5 +19,5 @@ package endpoint
 // Place an order for a pet
 
 func (r *Request) handleStore() {
-	r.status(501, "store endpoint not yet implemented")
+	r.status(http.StatusNotImplemented, "store endpoint not yet implemented")
 }

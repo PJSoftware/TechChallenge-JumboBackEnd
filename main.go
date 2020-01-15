@@ -16,7 +16,7 @@ func main() {
 
 	epr := new(endpoint.Request)
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", epr.Parser)
+	mux.HandleFunc("/", epr.Parse)
 
 	srv := server.New(mux, serverAddress)
 

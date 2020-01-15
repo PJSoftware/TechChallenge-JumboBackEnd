@@ -1,5 +1,7 @@
 package apiresponse
 
+import "net/http"
+
 // APIResponse encodes our response types
 type APIResponse struct {
 	Code         int32  `json:"code"`
@@ -7,25 +9,41 @@ type APIResponse struct {
 	Message      string `json:"message"`
 }
 
-var apiResponseTBL = []APIResponse{
-	APIResponse{200, "OK", ""},
-	// APIResponse{201, "Created", "Created"},
-	// APIResponse{202, "Accepted", "Accepted"},
-	// APIResponse{204, "No Content", "No Content"},
-	APIResponse{400, "Bad Request", ""},
-	// APIResponse{401, "Unauthorized", "Unauthorized"},
-	// APIResponse{403, "Forbidden", "Forbidden"},
-	APIResponse{404, "Not Found", ""},
-	APIResponse{405, "Method Not Allowed", ""},
-	// APIResponse{406, "Not Acceptable", "Not Acceptable"},
-	// APIResponse{412, "Precondition Failed", "Precondition Failed"},
-	// APIResponse{415, "Unsupported Media Type", "Unsupported Media Type"},
-	APIResponse{500, "Internal Server Error", "Internal Server Error"},
-	APIResponse{501, "Not Implemented", "Not Implemented"},
+var apiResponseTBL []APIResponse
+var responseTableInitialized bool
+
+// initResponses is called internally when required
+// It sets up json structures for responses we're likely to use
+// Only runs once, so no checking required for existing codes
+func initResponses() {
+	if !responseTableInitialized {
+		codes := []int32{
+			http.StatusOK,                  // 200
+			http.StatusBadRequest,          // 400
+			http.StatusNotFound,            // 404
+			http.StatusMethodNotAllowed,    // 405
+			http.StatusInternalServerError, // 500
+			http.StatusNotImplemented,      // 501
+		}
+
+		for _, code := range codes {
+			initResponse(code)
+		}
+	}
+	responseTableInitialized = true
+}
+
+func initResponse(code int32) {
+	resp := new(APIResponse)
+	resp.Code = code
+	resp.ResponseType = http.StatusText(int(code))
+	resp.Message = resp.ResponseType
+	apiResponseTBL = append(apiResponseTBL, *resp)
 }
 
 // ByCode returns pointer to Pet with specified ID
 func ByCode(code int32, msg string) *APIResponse {
+	initResponses()
 	for _, r := range apiResponseTBL {
 		if r.Code == code {
 			if msg != "" {

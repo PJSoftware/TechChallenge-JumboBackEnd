@@ -1,5 +1,7 @@
 package endpoint
 
+import "net/http"
+
 // GET
 // ​/user​/{username}
 // Get user by user name
@@ -33,5 +35,5 @@ package endpoint
 // Creates list of users with given input array
 
 func (r *Request) handleUser() {
-	r.status(501, "user endpoint not yet implemented")
+	r.status(http.StatusNotImplemented, "user endpoint not yet implemented")
 }
