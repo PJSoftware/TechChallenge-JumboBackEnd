@@ -41,7 +41,7 @@ func initResponse(code int32) {
 	apiResponseTBL = append(apiResponseTBL, *resp)
 }
 
-// ByCode returns pointer to Pet with specified ID
+// ByCode returns pointer to APIEwaponse with specified Code
 func ByCode(code int32, msg string) *APIResponse {
 	initResponses()
 	for _, r := range apiResponseTBL {
